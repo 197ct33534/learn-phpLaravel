@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Admin\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,9 +30,11 @@ Route::prefix('category')->group(function (){
 
 });
 
-Route::prefix('admin')->group(function(){
-    
-    Route::resource('products',ProductsController::class);
-   
-});
+Route::middleware('auth.admin')->prefix('admin')->group(function(){
+    Route::get('/',[DashboardController::class,'index']);
+    Route::middleware('auth.admin.products')->resource('products',ProductsController::class);
 
+});
+Route::get('error', function (){
+    return '<h1>lỗi rồi</h1>';
+})->name('error');

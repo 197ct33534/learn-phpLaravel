@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
+    public function __construct(){
+        // echo 'product construct chạy trước nè';
+        //sử dụng session để check login
+    }
     /**
      * Display a listing of the resource.
      *
