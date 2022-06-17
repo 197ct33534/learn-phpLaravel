@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,3 +39,6 @@ Route::middleware('auth.admin')->prefix('admin')->group(function(){
 Route::get('error', function (){
     return '<h1>lỗi rồi</h1>';
 })->name('error');
+
+Route::get('/',[HomeController::class,'index'])->name('home');
+Route::get('/sanpham/{id}',[HomeController::class,'getProductDetail']);
