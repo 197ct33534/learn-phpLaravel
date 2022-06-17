@@ -19,10 +19,12 @@ class CheckLoginAdmin
         if(!$this->isLogin()){
             return redirect(route('error'));
         }
-        // echo 'middleware request';
+        if($request->is('admin/*') || $request->is('admin')){
+            echo 'đây là chỗ của admin ';
+        }
         return $next($request);
     }
     public function isLogin(){
-        return false;
+        return true;
     }
 }
