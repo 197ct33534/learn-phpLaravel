@@ -19,26 +19,28 @@ use App\Http\Controllers\HomeController;
 
 // client routes
 
-Route::prefix('category')->group(function (){
-    Route::get('/',[CategoriesController::class,'index'])->name('categories.list');
+Route::prefix('category')->group(function () {
+    Route::get('/', [CategoriesController::class, 'index'])->name('categories.list');
     // lấy chi tiết 1 chuyên mục show form sửa chuyên mục
-    Route::get('/edit/{id}',[CategoriesController::class,'getCategory'])->name('categories.edit');
+    Route::get('/edit/{id}', [CategoriesController::class, 'getCategory'])->name('categories.edit');
     // post update giữ liệu
-    Route::post('/edit/{id}',[CategoriesController::class,'updateCategory']);
-    Route::get('/add',[CategoriesController::class,'showCategory'])->name('categories.add');
-    Route::post('/add',[CategoriesController::class,'handleAddCategory']);
-    Route::delete('/delete',[CategoriesController::class,'deleteCategory'])->name('categories.delete');
+    Route::post('/edit/{id}', [CategoriesController::class, 'updateCategory']);
+    Route::get('/add', [CategoriesController::class, 'showCategory'])->name('categories.add');
+    Route::post('/add', [CategoriesController::class, 'handleAddCategory']);
+    Route::delete('/delete', [CategoriesController::class, 'deleteCategory'])->name('categories.delete');
 
+    Route::get('/uploadFile', [CategoriesController::class, 'getFile']);
+
+    Route::post('/uploadFile', [CategoriesController::class, 'handleFile'])->name('categories.uploadFile');
 });
 
-Route::middleware('auth.admin')->prefix('admin')->group(function(){
-    Route::get('/',[DashboardController::class,'index']);
-    Route::middleware('auth.admin.products')->resource('products',ProductsController::class);
-
+Route::middleware('auth.admin')->prefix('admin')->group(function () {
+    Route::get('/', [DashboardController::class, 'index']);
+    Route::middleware('auth.admin.products')->resource('products', ProductsController::class);
 });
-Route::get('error', function (){
+Route::get('error', function () {
     return '<h1>lỗi rồi</h1>';
 })->name('error');
 
-Route::get('/',[HomeController::class,'index'])->name('home');
-Route::get('/sanpham/{id}',[HomeController::class,'getProductDetail']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/sanpham/{id}', [HomeController::class, 'getProductDetail']);
