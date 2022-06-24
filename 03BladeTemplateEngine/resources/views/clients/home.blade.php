@@ -3,7 +3,13 @@
    {{ $title}}
 @endsection
 @section('content')
-    <h1>trang chủ</h1>
+    <section>
+        <div class="container">
+            <h1>Trang Chủ</h1>
+            @include('clients.content.slide')
+            @include('clients.content.about')
+        </div>
+    </section>
 @endsection
 
 @section('sidebar')
@@ -12,20 +18,3 @@
     <h3>Home sidebar</h3>
 @endsection
 
-@section('css')
-<style type="text/css">
-    header{
-        background-color:#c3c3c3;
-    }
-</style>
-
-@endsection
-
-@section('js')
-<script type="text/javascript">
-      document.querySelector('.show').onclick = function() {
-        alert('helo world')
-    }
-</script>
-
-@endsection
