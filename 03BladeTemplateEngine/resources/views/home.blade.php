@@ -63,3 +63,27 @@
     @default
     <p>là 1 thứ j đó</p>
 @endswitch
+
+
+@php
+$number = 10;
+$total = $number + 20;
+@endphp
+<h3>kết quả : {{$total}}</h3>
+
+
+{{-- @for ($index = 0; $index < 3; $index++)
+    <p>phần tử : {{$index}}</p>
+@endfor --}}
+
+@verbatim
+    <div class="container">
+        hello,{{name}}
+    </div>
+@endverbatim
+<hr>
+
+@php
+    // $messages = 'đặt hàng thành công';
+@endphp
+@include('parts.notice')
