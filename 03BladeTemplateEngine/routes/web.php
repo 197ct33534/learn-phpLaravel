@@ -15,3 +15,6 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sanpham', [HomeController::class, 'product'])->name('product');
+Route::get('/add', [HomeController::class, 'getAdd'])->name('getadd');
+Route::post('/add', [HomeController::class, 'postAdd'])->name('postadd');
+Route::put('/add', [HomeController::class, 'putAdd'])->name('putadd');
