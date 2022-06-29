@@ -9,6 +9,7 @@ class HomeController extends Controller
     public $data =[] ;
     public function index(){
         $this->data['title'] ='Trang chủ';
+        $this->data['chart'] ='!';
         return view('clients.home',$this->data);
     }
     public function product(){

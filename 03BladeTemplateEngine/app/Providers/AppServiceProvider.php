@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\View\Components\Alert;
+use App\View\Components\Inputs\Button;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -34,5 +37,14 @@ class AppServiceProvider extends ServiceProvider
             }
             return false;
         });
+        Blade::if('env',function($value) {
+            if(config('app.env') === $value){
+                return true;
+            }
+            return false;
+        });
+        Blade::component('button',Button::class);
+
+        Blade::component('package-alert',Alert::class);
     }
 }
