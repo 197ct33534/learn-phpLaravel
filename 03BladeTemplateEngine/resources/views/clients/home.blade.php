@@ -3,6 +3,11 @@
     {{ $title }}
 @endsection
 @section('content')
+    @if (session('msg'))
+        <div class="alert alert-{{ session('type') }}">
+            {{ session('msg') }}
+        </div>
+    @endif
     <section>
         <div class="container">
             <h1>Trang Chủ</h1>

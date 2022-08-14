@@ -1,9 +1,12 @@
 @extends('layouts.client')
 @section('title')
-   {{ $title}}
+    {{ $title }}
 @endsection
 @section('content')
-    @datetime("2021-06-24 12:45:30")
+    @if (session('msg'))
+        <div class="alert alert-success">{{ session('msg') }}</div>
+    @endif
+    @datetime('2021-06-24 12:45:30')
     <h1>sản phẩm</h1>
 @endsection
 
@@ -28,5 +31,3 @@
         console.log(0)
     </script>
 @endprepend
-
-
