@@ -6,13 +6,21 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use  App\Http\Requests\ProductRequest;
 use App\Rules\Uppercase;
+use DB;
+
 class HomeController extends Controller
 {
     public $data = [];
     public function index()
     {
+
         $this->data['title'] = 'Trang chủ';
         $this->data['chart'] = '!';
+
+        // $users = DB::select('SELECT * FROM users WHERE id = ? AND email = ?',[2,'diem@gmail.com']);
+
+
+
         return view('clients.home', $this->data);
     }
     public function product()
@@ -30,11 +38,11 @@ class HomeController extends Controller
     {
 
         $rules = [
-            'name_product' => ['required','min:6'],
+            'name_product' => ['required', 'min:6'],
             // 'name_product' => ['required','min:6',function ($attribute,$value,$fail){
             //     uppercase($value,'tên sp phải viết hoa',$fail);
             // }],
-            'price_product' => ['required','integer']
+            'price_product' => ['required', 'integer']
         ];
         // $messages = [
         //     'name_product.required' => 'trường tên sản phẩm bắt buộc phải nhập',
@@ -43,9 +51,9 @@ class HomeController extends Controller
         //     'price_product.integer' => 'giá sản phẩm bắt buộc phải là số',
         // ];
         $messages = [
-            'required'=>'trường :attribute bắt buộc phải nhập',
-            'min'=> 'trường :attribute không được nhỏ hơn :min ký tự',
-            'integer'=>'trường :attribute phải là số'
+            'required' => 'trường :attribute bắt buộc phải nhập',
+            'min' => 'trường :attribute không được nhỏ hơn :min ký tự',
+            'integer' => 'trường :attribute phải là số'
         ];
         //    $request->validate($rules,$messages);
 
@@ -56,9 +64,9 @@ class HomeController extends Controller
         ];
         // $validator = Validator::make($request->all(), $rules, $messages,$attributes);
         // $validator->validate();
-        $request->validate($rules,$messages);
+        $request->validate($rules, $messages);
 
-        return response()->json(['status'=>'success']);
+        return response()->json(['status' => 'success']);
 
         // if($validator->fails()){
         //    $validator->errors()->add('msg','vui lòng kt dữ liệu');
@@ -75,9 +83,10 @@ class HomeController extends Controller
     {
         dd($request);
     }
-    public function uppercase ($value,$message,$fail){
-        if ($value  !== mb_strtoupper($value,'UTF-8')) {
-                $fail($message);
-            }
+    public function uppercase($value, $message, $fail)
+    {
+        if ($value  !== mb_strtoupper($value, 'UTF-8')) {
+            $fail($message);
+        }
     }
 }
