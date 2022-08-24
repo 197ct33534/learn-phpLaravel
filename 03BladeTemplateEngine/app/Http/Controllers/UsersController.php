@@ -16,8 +16,9 @@ class UsersController extends Controller
     public function index()
     {
         $title = 'danh sách người dùng';
-        $users = $this->users->statement('SELECT * FROM users');
-        dd($users);
+        $this->users->learnQueryBuilder();
+        // $users = $this->users->statement('SELECT * FROM users');
+        // dd($users);
         $usersList = $this->users->getAllUsers();
         return view('clients.users.lists', compact('title', 'usersList'));
     }
