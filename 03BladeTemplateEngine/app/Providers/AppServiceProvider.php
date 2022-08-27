@@ -6,6 +6,7 @@ use App\View\Components\Alert;
 use App\View\Components\Inputs\Button;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,24 +28,26 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::directive('datetime', function ($expression) {
-            $expression = trim($expression,'\'');
-            $expression = trim($expression,"\"");
+            $expression = trim($expression, '\'');
+            $expression = trim($expression, "\"");
             $dateObject = date_create($expression);
 
-            if(!empty($dateObject)){
-                $dateformate = $dateObject ->format('d-m-Y H:i:s');
+            if (!empty($dateObject)) {
+                $dateformate = $dateObject->format('d-m-Y H:i:s');
                 return $dateformate;
             }
             return false;
         });
-        Blade::if('env',function($value) {
-            if(config('app.env') === $value){
+        Blade::if('env', function ($value) {
+            if (config('app.env') === $value) {
                 return true;
             }
             return false;
         });
-        Blade::component('button',Button::class);
+        Blade::component('button', Button::class);
 
-        Blade::component('package-alert',Alert::class);
+        Blade::component('package-alert', Alert::class);
+        Paginator::useBootstrapFive();
+        Paginator::useBootstrapFour();
     }
 }

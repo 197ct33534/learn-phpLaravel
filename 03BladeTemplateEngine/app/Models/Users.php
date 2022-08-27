@@ -10,14 +10,51 @@ class Users extends Model
 {
     use HasFactory;
     protected $table = 'users';
-    public function getAllUsers()
+    public function getAllUsers($filters = [], $keywords = null, $sortArr = null, $perpage = 0)
     {
-        $users = DB::select('SELECT * FROM ' . $this->table . ' ORDER BY create_at DESC');
+        // DB::enableQueryLog();
+
+        // $users = DB::select('SELECT * FROM ' . $this->table . ' ORDER BY create_at DESC');
+        $users = DB::table($this->table)
+            ->select('users.*', 'groups.name as group_name')
+            ->join('groups', 'users.group_id', '=', 'groups.id');
+        $orderBy = 'users.create_at';
+        $orderType = 'asc';
+
+        if (!empty($sortArr) && is_array($sortArr)) {
+            if (!empty($sortArr['sortBy']) && !empty($sortArr['sortType'])) {
+                $orderBy = 'users.' . trim($sortArr['sortBy']);
+                $orderType = trim($sortArr['sortType']);
+            }
+        }
+        $users = $users->orderBy($orderBy, $orderType);
+
+
+        if (!empty($filters)) {
+            $users = $users->where($filters);
+        }
+        if (!empty($keywords)) {
+            $users = $users->where(function ($query) use ($keywords) {
+                $query->orWhere('fullname', 'like', '%' . $keywords . '%');
+                $query->orWhere('email', 'like', '%' . $keywords . '%');
+            });
+        }
+        // $users = $users->get();
+        if (!empty($perpage)) {
+            $users = $users->paginate($perpage)->withQueryString();
+        } else {
+            $users = $users->get();
+        }
+
+        // $sql = DB::getQueryLog();
+
+        // dd($sql);
         return $users;
     }
     public function addUser($data)
     {
-        DB::insert('INSERT INTO ' . $this->table . ' (fullname, email, create_at) values (?, ?, ?)', $data);
+        // DB::insert('INSERT INTO ' . $this->table . ' (fullname, email, create_at) values (?, ?, ?)', $data);
+        return DB::table($this->table)->insert($data);
     }
     public function getDetails($id)
     {
