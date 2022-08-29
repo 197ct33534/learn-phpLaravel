@@ -62,13 +62,16 @@ class Users extends Model
     }
     public function updateUser($data, $id)
     {
-        $data[] = $id;
-        return DB::update('UPDATE  ' . $this->table . ' SET fullname = ?, email = ?, updated_at = ? WHERE id = ?', $data);
+
+        // $data[] = $id;
+        // return DB::update('UPDATE  ' . $this->table . ' SET fullname = ?, email = ?, updated_at = ? WHERE id = ?', $data);
+        return DB::table($this->table)->where('id', $id)->update($data);
     }
 
     public function deleteUser($id)
     {
-        return DB::delete('DELETE FROM ' . $this->table . ' WHERE id = ?', [$id]);
+        // return DB::delete('DELETE FROM ' . $this->table . ' WHERE id = ?', [$id]);
+        return DB::table($this->table)->where('id', $id)->delete();
     }
     public function statement($sql)
     {
