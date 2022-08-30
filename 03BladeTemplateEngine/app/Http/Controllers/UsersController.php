@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Users;
+use App\Models\Phone;
+
 use  App\Http\Requests\UsersRequest;
 
 class UsersController extends Controller
@@ -15,6 +17,22 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->users = new Users();
+    }
+    public function oneToOne()
+    {
+        // $phoneObject = Users::find(11)->phone;
+        // $idPhone = $phoneObject->id;
+        // $phoneNumber = $phoneObject->phone;
+        // echo "id phone number: " . $idPhone . "<br/>";
+        // echo " phone number: " . $phoneNumber . "<br/>";
+
+        // $phone =  Users::find(11)->phone();
+        // dd($phone);
+
+        $user = Phone::where('phone', '093255555')->first()->user;
+        $fullname = $user->fullname;
+        $email = $user->email;
+        echo "fullname {$fullname} <br/> email {$email}";
     }
     public function index(Request $request)
     {

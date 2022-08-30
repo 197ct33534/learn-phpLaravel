@@ -5,11 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Models\Phone;
 
 class Users extends Model
 {
     use HasFactory;
     protected $table = 'users';
+    public function phone()
+    {
+        return $this->hasOne(Phone::class, 'user_id', 'id');
+    }
     public function getAllUsers($filters = [], $keywords = null, $sortArr = null, $perpage = 0)
     {
         // DB::enableQueryLog();

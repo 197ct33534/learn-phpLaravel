@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,4 +53,15 @@ Route::prefix('users')->name('users.')->group(function () {
     Route::get('/edit/{id}', [UsersController::class, 'getEdit'])->name('edit');
     Route::post('/update', [UsersController::class, 'postEdit'])->name('post_edit');
     Route::get('/delete/{id}', [UsersController::class, 'delete'])->name('delete');
+    Route::get('/oneToOne', [UsersController::class, 'oneToOne'])->name('oneToOne');
+});
+
+Route::prefix('posts')->name('posts.')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('index');
+    Route::get('/add', [PostController::class, 'add'])->name('add');
+    Route::get('/update/{id}', [PostController::class, 'update'])->name('update');
+    Route::get('/delete/{id}', [PostController::class, 'delete'])->name('delete');
+    Route::post('/delete-any', [PostController::class, 'handleDeleteAny'])->name('delete-any');
+    Route::get('/restore/{id}', [PostController::class, 'restore'])->name('restore');
+    Route::get('/forceDelete/{id}', [PostController::class, 'forceDelete'])->name('force-delete');
 });
