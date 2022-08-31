@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Categoies;
+use App\Models\Comments;
+
 
 class Post extends Model
 {
@@ -36,4 +39,18 @@ class Post extends Model
         'content',
         'status'
     ];
+
+    public function getCategoies()
+    {
+        return $this->belongsToMany(
+            Categoies::class,
+            'post_categoies', // bảng trung gian
+            'posts_id', // khóa ngoại với bảng hiện tại
+            'categoies_id' // khóa ngoại của bảng tham chiếu tới
+        );
+    }
+    public function postComments()
+    {
+        return $this->hasMany(Comments::class, 'posts_id', 'id');
+    }
 }

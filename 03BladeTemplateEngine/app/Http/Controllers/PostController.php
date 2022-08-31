@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoies;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
@@ -154,5 +155,16 @@ class PostController extends Controller
             return redirect()->route('posts.index')->with('msg', 'xóa bài viết vĩnh viễn thành công');
         }
         return redirect()->route('posts.index')->with('msg', 'bài viết không tồn tại');
+    }
+    public function manyToMany()
+    {
+        // $cateList = Post::find(18)->getCategoies;
+        // dd($cateList);
+
+        $postList = Categoies::find(2)->getPosts;
+        dd($postList);
+        foreach ($postList as $post) {
+            echo $post->pivot;
+        }
     }
 }

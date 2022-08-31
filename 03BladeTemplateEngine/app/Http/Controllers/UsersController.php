@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use DB;
 use App\Models\Users;
 use App\Models\Phone;
+use App\Models\Groups;
 
 use  App\Http\Requests\UsersRequest;
+use App\Models\Country;
+use App\Models\Mechanics;
 
 class UsersController extends Controller
 {
@@ -26,13 +29,35 @@ class UsersController extends Controller
         // echo "id phone number: " . $idPhone . "<br/>";
         // echo " phone number: " . $phoneNumber . "<br/>";
 
-        // $phone =  Users::find(11)->phone();
-        // dd($phone);
+        $phone =  Users::find(11)->phone;
+        dd($phone);
 
-        $user = Phone::where('phone', '093255555')->first()->user;
-        $fullname = $user->fullname;
-        $email = $user->email;
-        echo "fullname {$fullname} <br/> email {$email}";
+        // $user = Phone::where('phone', '093255555')->first()->user;
+        // $fullname = $user->fullname;
+        // $email = $user->email;
+        // echo "fullname {$fullname} <br/> email {$email}";
+    }
+    public function oneToMany()
+    {
+        // return collecttion -> Groups::find(2)->oneToManyUsers
+        // return same quey builder -> Groups::find(2)->oneToManyUsers() , we are merge with where , orderby, ...
+
+        // $userList = Groups::find(2)->oneToManyUsers()->where('email', 'diemlun@gmail.com')->get();
+        // dd($userList);
+
+
+        $group = Users::find(2)->belongsToGroupOneToMany;
+        dd($group);
+    }
+    public function oneToThrough()
+    {
+        $ownerList = Mechanics::find(1)->carOwner;
+        dd($ownerList);
+    }
+    public function manyToThrough()
+    {
+        $postList = Country::find(2)->postsOfCountry;
+        dd($postList);
     }
     public function index(Request $request)
     {

@@ -6,16 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\PostController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Models\Groups;
+use App\Models\Users;
+use App\Models\Post;
+
+use App\Models\Comments;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sanpham', [HomeController::class, 'product'])->name('product');
@@ -54,6 +50,9 @@ Route::prefix('users')->name('users.')->group(function () {
     Route::post('/update', [UsersController::class, 'postEdit'])->name('post_edit');
     Route::get('/delete/{id}', [UsersController::class, 'delete'])->name('delete');
     Route::get('/oneToOne', [UsersController::class, 'oneToOne'])->name('oneToOne');
+    Route::get('/oneToMany', [UsersController::class, 'oneToMany'])->name('oneToMany');
+    Route::get('/oneToThrough', [UsersController::class, 'oneToThrough'])->name('oneToThrough');
+    Route::get('/manyToThrough', [UsersController::class, 'manyToThrough'])->name('manyToThrough');
 });
 
 Route::prefix('posts')->name('posts.')->group(function () {
@@ -64,4 +63,17 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::post('/delete-any', [PostController::class, 'handleDeleteAny'])->name('delete-any');
     Route::get('/restore/{id}', [PostController::class, 'restore'])->name('restore');
     Route::get('/forceDelete/{id}', [PostController::class, 'forceDelete'])->name('force-delete');
+    Route::get('manyToMany', [PostController::class, 'manyToMany']);
+});
+Route::get('/', function () {
+    // $Group = Users::find(1)->belongsToGroupOneToMany;
+    // get all users from groups
+    // $userList = Groups::find(2)->oneToManyUsers;
+    // filters
+    // $userList = Groups::find(2)->oneToManyUsers()->where('status', '1')->get();
+
+
+    // dd($userList);
+    $postList = Post::has('postComments', '>=', '2')->get();
+    dd($postList);
 });
