@@ -9,7 +9,8 @@ use App\Models\Post;
 class Comments extends Model
 {
     use HasFactory;
-
+    protected $fillable = ['name', 'content', 'image'];
+    public $timestamps = false;
     public function postComments()
     {
         return $this->hasMany(Post::class, 'posts_id', 'id');

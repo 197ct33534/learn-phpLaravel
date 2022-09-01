@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Categoies;
 use App\Models\Comments;
+use App\Models\Votes;
 
 
 class Post extends Model
@@ -52,5 +53,9 @@ class Post extends Model
     public function postComments()
     {
         return $this->hasMany(Comments::class, 'posts_id', 'id');
+    }
+    public function postVotes()
+    {
+        return $this->hasMany(Votes::class, 'posts_id', 'id');
     }
 }
