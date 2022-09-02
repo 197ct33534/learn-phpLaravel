@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Faker\Factory;
 
 Route::get('/', function () {
-    return '<h1>Migreation - Seeding 3!</h1>';
+    $faker = Factory::create();
+    echo  $faker->email;
 });
