@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('groups', function (Blueprint $table) {
-            $table->text('permissions')->nullable();
+            $table->text('permissions')->after('name')->nullable();
         });
     }
 
