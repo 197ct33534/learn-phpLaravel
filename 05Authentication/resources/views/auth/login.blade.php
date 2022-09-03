@@ -8,16 +8,21 @@
                     <div class="card-header">Đăng nhập hệ thống</div>
 
                     <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger text-center">
+                                Đã có lỗi xảy ra . Vui lòng kiểm tra lại dữ liệu
+                            </div>
+                        @endif
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
 
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">Địa chỉ Email</label>
+                                <label for="text" class="col-md-4 col-form-label text-md-end">Tên đăng nhập</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                    <input id="text" type="text"
+                                        class="form-control @error('username') is-invalid @enderror" name="username"
+                                        value="{{ old('username') }}" autocomplete="email" autofocus>
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -33,7 +38,7 @@
                                 <div class="col-md-6">
                                     <input id="password" type="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="current-password">
+                                        autocomplete="current-password">
 
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
