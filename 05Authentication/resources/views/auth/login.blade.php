@@ -17,14 +17,14 @@
                             @csrf
 
                             <div class="row mb-3">
-                                <label for="text" class="col-md-4 col-form-label text-md-end">Tên đăng nhập</label>
+                                <label for="text" class="col-md-4 col-form-label text-md-end">Email / Username</label>
 
                                 <div class="col-md-6">
                                     <input id="text" type="text"
                                         class="form-control @error('username') is-invalid @enderror" name="username"
-                                        value="{{ old('username') }}" autocomplete="email" autofocus>
+                                        value="{{ old('username') }}" autocomplete="username" autofocus>
 
-                                    @error('email')
+                                    @error('username')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

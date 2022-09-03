@@ -81,4 +81,17 @@ class LoginController extends Controller
             $this->username() => ['Tên đăng nhập hoặc mật khẩu không hợp lệ'],
         ]);
     }
+    protected function credentials(Request $request)
+    {
+        $field = 'username';
+        if (filter_var($request->username, FILTER_VALIDATE_EMAIL)) {
+            $field = 'email';
+        };
+        $dataArr = [
+            $field => $request->username,
+            'password' => $request->password,
+        ];
+        return $dataArr;
+        // return $request->only($this->username(), 'password');
+    }
 }
