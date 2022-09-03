@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
 
 class RegisterController extends Controller
 {
@@ -29,7 +32,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::ADMIN;
+    // protected $redirectTo = RouteServiceProvider::ADMIN;
+    protected $redirectTo;
 
     /**
      * Create a new controller instance.
@@ -39,6 +43,7 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->redirectTo = route('register');
     }
 
     /**
@@ -51,8 +56,26 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'unique:users'],
+
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8'],
+            'password_confirmation' => ['required', 'same:password'],
+        ], [
+            'required' => ':attribute bắt buộc phải nhập',
+            'string' => ':attribute phải là ký tự',
+            'max' => ':attribute  không được lớn hơn :max ký tự',
+            'email' => ':attribute  không đúng định dạng email',
+            'unique' => ':attribute  đã được sử dụng',
+            'same' => ':attribute  phải giống mật khẩu',
+
+        ], [
+            'name' => 'Họ tên',
+            'email' => 'Địa chỉ Email',
+            'password' => 'Mật khẩu',
+            'password_confirmation' => 'Nhập lại mật khẩu',
+            'username' => 'Tên đăng nhập',
+
         ]);
     }
 
@@ -67,7 +90,25 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'username' => $data['username'],
+
             'password' => Hash::make($data['password']),
         ]);
+    }
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+
+
+        if ($response = $this->registered($request, $user)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 201)
+            : redirect($this->redirectPath())->with('msg', 'Đăng ký tài khoản thành công');
     }
 }
