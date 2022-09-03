@@ -8,7 +8,8 @@
                     <div class="card-header">Xác nhận mật khẩu</div>
 
                     <div class="card-body">
-                        Vui lòng nhập mật khẩu để tiếp tục
+                        <div class="alert alert-warning">Vui lòng nhập mật khẩu để tiếp tục</div>
+
 
                         <form method="POST" action="{{ route('password.confirm') }}">
                             @csrf
@@ -19,7 +20,7 @@
                                 <div class="col-md-6">
                                     <input id="password" type="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="current-password">
+                                        autocomplete="current-password">
 
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
