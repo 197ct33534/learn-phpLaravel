@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +22,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/admin', function () {
-    return '<h1>Admin Dashboard</h1>';
+Route::prefix('/admin')->middleware('auth')->group(function () {
+    Route::get('/', [AdminController::class, 'index']);
+    Route::get('/products', function () {
+        return 'products';
+    });
 });
+// Route::get('/admin', [AdminController::class, 'index'])->middleware('auth');
 Route::get('routes', function () {
     $routeCollection = Route::getRoutes();
 
