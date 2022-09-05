@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Doctor\Auth\LoginController;
+use App\Http\Controllers\Doctor\IndexController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -75,6 +76,9 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 //Doctor Route
 Route::prefix('doctors')->name('doctors.')->group(function () {
-    Route::get('login', [LoginController::class, 'login']);
+    // kiểm tra đăng nhập hay chưa auth:doctor
+    Route::get('', [IndexController::class, 'index'])->middleware('auth:doctor');
+    // kt khách hàng chưa đăng nhập với guard cụ thể
+    Route::get('login', [LoginController::class, 'login'])->middleware('guest:doctor');
     Route::post('login', [LoginController::class, 'postLogin'])->name('postLogin');
 });
