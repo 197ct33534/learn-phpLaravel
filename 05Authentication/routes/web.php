@@ -77,8 +77,18 @@ Route::post('/email/verification-notification', function (Request $request) {
 //Doctor Route
 Route::prefix('doctors')->name('doctors.')->group(function () {
     // kiểm tra đăng nhập hay chưa auth:doctor
-    Route::get('', [IndexController::class, 'index'])->middleware('auth:doctor');
+    Route::get('', [IndexController::class, 'index'])->middleware('auth:doctor')->name('index');
     // kt khách hàng chưa đăng nhập với guard cụ thể
-    Route::get('login', [LoginController::class, 'login'])->middleware('guest:doctor');
+    Route::get('login', [LoginController::class, 'login'])->middleware('guest:doctor')->name('login');
     Route::post('login', [LoginController::class, 'postLogin'])->name('postLogin');
+    // phương thức get cho logout
+    // Route::get('logout', function () {
+    //     Auth::guard('doctor')->logout();
+    //     return redirect()->route('doctors.login');
+    // });
+
+    Route::post('logout', function () {
+        Auth::guard('doctor')->logout();
+        return redirect()->route('doctors.login');
+    })->name('logout');
 });

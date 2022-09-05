@@ -9,6 +9,6 @@ class IndexController extends Controller
 {
     public function index()
     {
-        return '<h1>trang dành cho bác sĩ</h1>';
+        return view('doctor.index');
     }
 }
