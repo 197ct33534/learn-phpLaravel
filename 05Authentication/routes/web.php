@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Doctor\Auth\LoginController;
 use App\Http\Controllers\Doctor\IndexController;
+use App\Http\Controllers\Doctor\Auth\ForgotPasswordController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -91,4 +92,10 @@ Route::prefix('doctors')->name('doctors.')->group(function () {
         Auth::guard('doctor')->logout();
         return redirect()->route('doctors.login');
     })->name('logout');
+    Route::get('forgot-password', [ForgotPasswordController::class, 'getForgotPassword'])->middleware('guest:doctor')->name('forgotPassword');
+
+    Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->middleware('guest:doctor')->name('POSTforgotPassword');
+    Route::get('reset-password/{token}', function () {
+        return 'reset-password';
+    })->name('resetPassword');
 });
