@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
-
+use  App\Policies\PostPolicy;
 
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -35,8 +35,12 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         // định nghĩa gate
-        Gate::define('posts.add', function (User $user) {
-            return true;
-        });
+        // cách 1
+        // Gate::define('posts.add', function (User $user) {
+        //     return true;
+        // });
+
+        // cách 2
+        Gate::define('posts.add', [PostPolicy::class, 'add']);
     }
 }
