@@ -13,14 +13,14 @@ class PostController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-
-        if ($user->can('viewAny', Posts::class)) {
-            return 'được phép';
-        }
-        if ($user->cant('viewAny', Posts::class)) {
-            abort(403);
-        }
+        $this->authorize('viewAny', Posts::class);
+        // $user = Auth::user();
+        // if ($user->can('viewAny', Posts::class)) {
+        //     return 'được phép';
+        // }
+        // if ($user->cant('viewAny', Posts::class)) {
+        //     abort(403);
+        // }
         return view('admin.post.lists');
     }
 
@@ -54,12 +54,15 @@ class PostController extends Controller
     }
     public  function detail(Request $request, Posts $post)
     {
-        $user = $request->user();
-        if ($user->can('view', $post)) {
-            return 'được phép';
-        }
-        if ($user->cant('view', $post)) {
-            abort(403);
-        }
+
+        $this->authorize('view', $post);
+
+        // $user = $request->user();
+        // if ($user->can('view', $post)) {
+        //     return 'được phép';
+        // }
+        // if ($user->cant('view', $post)) {
+        //     abort(403);
+        // }
     }
 }
