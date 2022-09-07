@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Posts;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use  App\Policies\PostPolicy;
@@ -42,5 +43,9 @@ class AuthServiceProvider extends ServiceProvider
 
         // cách 2
         Gate::define('posts.add', [PostPolicy::class, 'add']);
+
+        Gate::define('posts.edit', function (User $user, Posts $post) {
+            return $user->id == $post->user_id;
+        });
     }
 }

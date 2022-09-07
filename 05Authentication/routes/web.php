@@ -35,7 +35,7 @@ Route::prefix('/admin')->middleware(['auth', 'verified'])->group(function () {
     Route::prefix('/posts')->name('posts.')->group(function () {
         Route::get('/', [PostController::class, 'index']);
         Route::get('/add', [PostController::class, 'add']);
-        Route::get('/edit/{id}', [PostController::class, 'edit']);
+        Route::get('/edit/{post}', [PostController::class, 'edit']);
     });
 });
 // Route::get('/admin', [AdminController::class, 'index'])->middleware('auth');

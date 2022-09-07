@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Posts;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Termwind\Components\Dd;
 
 class PostController extends Controller
 {
@@ -22,8 +25,14 @@ class PostController extends Controller
         }
         return 'thêm bài post';
     }
-    public function edit($id)
+    public function edit(Posts $post)
     {
-        return 'edit bài post id' . $id;
+        if (Gate::allows('posts.edit', $post)) {
+            return 'Bạn  có quyền sửa bài post';
+        }
+        if (Gate::denies('posts.edit', $post)) {
+            return 'Bạn không có quyền sửa bài post';
+        }
+        return 'edit bài post id' . $post->title;
     }
 }
