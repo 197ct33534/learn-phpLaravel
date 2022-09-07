@@ -14,6 +14,7 @@ class PostController extends Controller
     public function index()
     {
         $user = Auth::user();
+
         if ($user->can('viewAny', Posts::class)) {
             return 'được phép';
         }

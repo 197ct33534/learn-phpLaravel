@@ -91,4 +91,12 @@ class PostPolicy
     {
         //
     }
+    // nếu pass qua before sẽ ko check các poli khác nữa
+    // nếu return null sẽ quay lại check tiếp
+    public function before(User $user)
+    {
+        if ($user->is_superAdmin()) {
+            return true;
+        }
+    }
 }
