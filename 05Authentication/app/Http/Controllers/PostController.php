@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Posts;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -12,6 +13,13 @@ class PostController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        if ($user->can('viewAny', Posts::class)) {
+            return 'được phép';
+        }
+        if ($user->cant('viewAny', Posts::class)) {
+            abort(403);
+        }
         return view('admin.post.lists');
     }
 
@@ -42,5 +50,15 @@ class PostController extends Controller
         //     return 'Bạn không có quyền sửa bài post';
         // }
         return 'edit bài post id' . $post->title;
+    }
+    public  function detail(Request $request, Posts $post)
+    {
+        $user = $request->user();
+        if ($user->can('view', $post)) {
+            return 'được phép';
+        }
+        if ($user->cant('view', $post)) {
+            abort(403);
+        }
     }
 }
