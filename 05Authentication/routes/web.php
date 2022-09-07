@@ -34,8 +34,15 @@ Route::prefix('/admin')->middleware(['auth', 'verified'])->group(function () {
     // post Route
     Route::prefix('/posts')->name('posts.')->group(function () {
         Route::get('/', [PostController::class, 'index']);
-        Route::get('/add', [PostController::class, 'add']);
+        // Route::get('/add', [PostController::class, 'add']);
         Route::get('/edit/{post}', [PostController::class, 'edit']);
+        // Nếu muốn kiểm tra quyền bằng Middleware, sử dụng cú pháp sau:
+        // Route::get('/add', [PostController::class, 'add'])->middleware('can:posts.add');
+        // hoặc bạn dùng thông qua phương thức can() với cú pháp sau:
+        Route::get('/add', [PostController::class, 'add'])->can('posts.add');
+
+        // Route::get('/edit/{post}', [PostController::class, 'edit'])->middleware('can:posts.edit,post');
+        Route::get('/edit/{post}', [PostController::class, 'edit'])->can('posts.edit', 'post');
     });
 });
 // Route::get('/admin', [AdminController::class, 'index'])->middleware('auth');
