@@ -43,6 +43,7 @@ Route::prefix('/admin')->middleware(['auth', 'verified'])->group(function () {
 
         // Route::get('/edit/{post}', [PostController::class, 'edit'])->middleware('can:posts.edit,post');
         Route::get('/edit/{post}', [PostController::class, 'edit'])->can('posts.edit', 'post');
+        Route::get('/detail/{post}', [PostController::class, 'detail']);
     });
 });
 // Route::get('/admin', [AdminController::class, 'index'])->middleware('auth');
