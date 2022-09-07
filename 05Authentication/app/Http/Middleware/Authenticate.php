@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Auth;
 
 class Authenticate extends Middleware
 {
@@ -14,7 +15,13 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
+        if (!$request->expectsJson()) {
+            $currentMiddeware = $request->route()->middleware();
+            // dd($currentMiddeware);
+            if (!empty($currentMiddeware) && in_array('auth:doctor', $currentMiddeware)) {
+                return route('doctors.login');
+            }
+
             return route('login');
         }
     }
