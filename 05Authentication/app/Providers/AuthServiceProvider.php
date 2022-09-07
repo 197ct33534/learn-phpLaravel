@@ -44,7 +44,7 @@ class AuthServiceProvider extends ServiceProvider
         // cách 2
         // Gate::define('posts.add', [PostPolicy::class, 'add']);
 
-        Gate::define('posts.edit', function (User $user, Posts $post) {
+        Gate::define('posts.edit', function (User $user,  $post) {
             return $user->id == $post->user_id;
         });
     }

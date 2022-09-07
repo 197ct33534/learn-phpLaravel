@@ -12,7 +12,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        return 'danh sách bài post';
+        return view('admin.post.lists');
     }
 
     public function add()
