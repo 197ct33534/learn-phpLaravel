@@ -9,6 +9,7 @@ use App\Http\Controllers\Doctor\Auth\LoginController;
 use App\Http\Controllers\Doctor\IndexController;
 use App\Http\Controllers\Doctor\Auth\ForgotPasswordController;
 use App\Http\Controllers\Doctor\Auth\ResetPasswordController;
+use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,8 +30,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::prefix('/admin')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [AdminController::class, 'index']);
-    Route::get('/products', function () {
-        return 'products';
+
+    // post Route
+    Route::prefix('/posts')->name('posts.')->group(function () {
+        Route::get('/', [PostController::class, 'index']);
+        Route::get('/add', [PostController::class, 'add']);
+        Route::get('/edit/{id}', [PostController::class, 'edit']);
     });
 });
 // Route::get('/admin', [AdminController::class, 'index'])->middleware('auth');
