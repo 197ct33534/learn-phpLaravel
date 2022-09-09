@@ -19,10 +19,9 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // admin route
 
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
-    Route::get('', [DashboardController::class, 'index']);
+    Route::get('', [DashboardController::class, 'index'])->name('index');
 });
