@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,7 +24,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // admin route
 
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
-    Route::get('', function () {
-        return '<h1>Dashboard Admin</h1>';
-    });
+    Route::get('', [DashboardController::class, 'index']);
 });
