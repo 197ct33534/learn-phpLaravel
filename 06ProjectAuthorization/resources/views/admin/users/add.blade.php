@@ -26,7 +26,7 @@
             @enderror (session('name'))
         </div>
         <div class="form-group">
-            <label for="passwordUser">Mật khẩu (không nhập nếu không mún đổi mật khẩu)</label>
+            <label for="passwordUser">Mật khẩu </label>
             <input type="password" name="password" class="form-control" id="passwordUser">
             @error('password')
                 <span class="text-danger">{{ $message }}</span>
