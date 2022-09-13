@@ -41,7 +41,8 @@
                                                 </label>
                                                 <input type="checkbox" name="role[{{ $module->name }}][]"
                                                     id="role_{{ $module->name }}_{{ $roleName }}"
-                                                    value="{{ $roleName }}">
+                                                    value="{{ $roleName }}"
+                                                    {{ is_Role($dataPermissionArr, $module->name, $roleName) ? 'checked' : false }}>
                                                 {{ $roleValue }}
                                             </div>
                                         @endforeach
@@ -53,7 +54,8 @@
 
                                             </label>
                                             <input type="checkbox" name="role[{{ $module->name }}][]"
-                                                id="role_{{ $module->name }}_permission" value="permission">
+                                                id="role_{{ $module->name }}_permission" value="permission"
+                                                {{ is_Role($dataPermissionArr, $module->name, 'permission') ? 'checked' : false }}>
                                             Phân quyền
                                         </div>
                                     @endif
