@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UsersController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,4 +25,10 @@ Auth::routes(['register' => false]);
 
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     Route::get('', [DashboardController::class, 'index'])->name('index');
+
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('', [UsersController::class, 'index'])->name('index');
+        Route::get('add', [UsersController::class, 'add'])->name('add');
+        Route::post('add', [UsersController::class, 'postAdd'])->name('postAdd');
+    });
 });
