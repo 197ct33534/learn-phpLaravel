@@ -41,8 +41,8 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
         Route::get('', [GroupsController::class, 'index'])->name('index');
         Route::get('add', [GroupsController::class, 'add'])->name('add');
         Route::post('add', [GroupsController::class, 'postAdd'])->name('postAdd');
-        Route::get('edit/{user}', [GroupsController::class, 'edit'])->name('edit');
-        Route::post('edit/{user}', [GroupsController::class, 'postEdit'])->name('postedit');
-        Route::get('delete/{user}', [GroupsController::class, 'delete'])->name('delete');
+        Route::get('edit/{group}', [GroupsController::class, 'edit'])->name('edit');
+        Route::post('edit/{group}', [GroupsController::class, 'postEdit'])->name('postedit');
+        Route::get('delete/{group}', [GroupsController::class, 'delete'])->name('delete');
     });
 });
