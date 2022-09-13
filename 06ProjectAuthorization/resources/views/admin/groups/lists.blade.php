@@ -23,6 +23,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Tên nhóm</th>
                 <th scope="col">Người tạo</th>
+                <th scope="col">Phân quyền</th>
 
                 <th scope="col">Sửa</th>
                 <th scope="col">Xóa</th>
@@ -38,7 +39,10 @@
                     <td>
                         {{ !empty($group->postBy->name) ? $group->postBy->name : false }}
                     </td>
-
+                    <td>
+                        <a href="{{ route('admin.groups.permissions', $group) }}"><button class="btn btn-primary">Phân
+                                quyền</button></a>
+                    </td>
                     <td>
                         <a href="{{ route('admin.groups.edit', $group) }}"><button class="btn btn-warning">Sửa</button></a>
                     </td>
