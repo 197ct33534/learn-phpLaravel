@@ -10,7 +10,11 @@ class Groups extends Model
 {
     use HasFactory;
     protected $table = 'groups';
+    protected $fillable = [
+        'name',
+        'user_id',
 
+    ];
     // get info user created group
     public function postBy()
     {
