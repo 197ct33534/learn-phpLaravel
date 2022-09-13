@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UsersController;
+use  App\Http\Controllers\Admin\GroupsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,7 +26,7 @@ Auth::routes(['register' => false]);
 
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     Route::get('', [DashboardController::class, 'index'])->name('index');
-
+    // users rotue
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('', [UsersController::class, 'index'])->name('index');
         Route::get('add', [UsersController::class, 'add'])->name('add');
@@ -33,5 +34,15 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
         Route::get('edit/{user}', [UsersController::class, 'edit'])->name('edit');
         Route::post('edit/{user}', [UsersController::class, 'postEdit'])->name('postedit');
         Route::get('delete/{user}', [UsersController::class, 'delete'])->name('delete');
+    });
+
+    // group user
+    Route::prefix('groups')->name('groups.')->group(function () {
+        Route::get('', [GroupsController::class, 'index'])->name('index');
+        Route::get('add', [GroupsController::class, 'add'])->name('add');
+        Route::post('add', [GroupsController::class, 'postAdd'])->name('postAdd');
+        Route::get('edit/{user}', [GroupsController::class, 'edit'])->name('edit');
+        Route::post('edit/{user}', [GroupsController::class, 'postEdit'])->name('postedit');
+        Route::get('delete/{user}', [GroupsController::class, 'delete'])->name('delete');
     });
 });
