@@ -90,4 +90,13 @@ class UsersController extends Controller
         $user->save();
         return redirect()->route('admin.users.index')->with('msg', 'Cập nhật người dùng thành công');
     }
+
+    public function delete(User $user)
+    {
+        if ($user->id != Auth::user()->id) {
+            User::destroy($user->id);
+            return redirect()->route('admin.users.index')->with('msg', 'Xóa người dùng thành công');
+        }
+        return redirect()->route('admin.users.index')->with('error', 'Xóa người dùng thất bại');
+    }
 }
