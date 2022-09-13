@@ -55,6 +55,39 @@ class UsersController extends Controller
     }
     public function edit(User $user)
     {
-        dd($user);
+        $groupList = Groups::all();
+        return view('admin.users.edit', compact('groupList', 'user'));
+    }
+    public function postEdit(User $user, Request $request)
+    {
+
+        $rules = [
+            'name' => ['required'],
+            'email' => ['required', 'email', 'unique:users,email,' . $user->id],
+            'group_id' => ['required', function ($attribute, $value, $fail) {
+                if ($value == 0) {
+                    $fail('vui lòng chọn nhóm');
+                }
+            }],
+
+        ];
+        $messages = [
+            'name.required' => 'Họ và tên bắt buộc phải nhập ',
+            'email.required' => 'Email bắt buộc phải nhập ',
+            'email.email' => 'Email không đúng định dạng',
+            'email.unique' => 'Email đã dươc sử dụng',
+            'group_id.required' => 'Vui lòng chọn nhóm',
+        ];
+        $request->validate($rules, $messages);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if (!empty($request->password)) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->group_id = $request->group_id;
+        $user->save();
+        return redirect()->route('admin.users.index')->with('msg', 'Cập nhật người dùng thành công');
     }
 }
