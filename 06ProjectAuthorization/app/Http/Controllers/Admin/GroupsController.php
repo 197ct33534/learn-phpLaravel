@@ -75,7 +75,13 @@ class GroupsController extends Controller
             'delete' => 'Xóa',
 
         ];
-        return view('admin.groups.permissions', compact('group', 'moduleList', 'roleListArr'));
+        $dataPermissionJson = $group->permissions;
+        $dataPermissionArr = [];
+        if (!empty($dataPermissionJson)) {
+            $dataPermissionArr = json_decode($dataPermissionJson, true);
+        }
+
+        return view('admin.groups.permissions', compact('group', 'moduleList', 'roleListArr', 'dataPermissionArr'));
     }
     public function postPermissions(Groups $group, Request $request)
     {
