@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UsersController;
 use  App\Http\Controllers\Admin\GroupsController;
+use  App\Http\Controllers\Admin\PostsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,5 +48,15 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
 
         Route::get('permissions/{group}', [GroupsController::class, 'permissions'])->name('permissions');
         Route::post('permissions/{group}', [GroupsController::class, 'postPermissions']);
+    });
+
+    // post route
+    Route::prefix('posts')->name('posts.')->group(function () {
+        Route::get('', [PostsController::class, 'index'])->name('index');
+        Route::get('add', [PostsController::class, 'add'])->name('add');
+        Route::post('add', [PostsController::class, 'postAdd'])->name('postAdd');
+        Route::get('edit/{post}', [PostsController::class, 'edit'])->name('edit');
+        Route::post('edit/{post}', [PostsController::class, 'postEdit'])->name('postedit');
+        Route::get('delete/{post}', [PostsController::class, 'delete'])->name('delete');
     });
 });
