@@ -35,7 +35,7 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->getGroup->name }}</td>
                     <td>
-                        <a href="#"><button class="btn btn-warning">Sửa</button></a>
+                        <a href="{{ route('admin.users.edit', $user) }}"><button class="btn btn-warning">Sửa</button></a>
                     </td>
                     <td>
                         @if (Auth::user()->id != $user->id)
