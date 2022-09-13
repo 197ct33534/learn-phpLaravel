@@ -8,6 +8,9 @@
     @if (session('msg'))
         <div class="text-center alert alert-success">{{ session('msg') }}</div>
     @endif
+    @if (session('error'))
+        <div class="text-center alert alert-danger">{{ session('error') }}</div>
+    @endif
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Danh sách người dùng</h1>
 
@@ -39,7 +42,8 @@
                     </td>
                     <td>
                         @if (Auth::user()->id != $user->id)
-                            <a href="#" onclick="return confirm('bạn có chắc chắn xóa ?')"><button
+                            <a href="{{ route('admin.users.delete', $user) }}"
+                                onclick="return confirm('bạn có chắc chắn xóa ?')"><button
                                     class="btn btn-danger">Xóa</button></a>
                         @endif
 
