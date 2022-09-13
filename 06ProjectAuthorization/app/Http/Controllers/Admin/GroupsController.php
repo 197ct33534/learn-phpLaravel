@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Groups;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Modules;
 
 class GroupsController extends Controller
 {
@@ -62,5 +63,29 @@ class GroupsController extends Controller
         }
         Groups::destroy($group->id);
         return redirect()->route('admin.groups.index')->with('msg', 'Xóa nhóm người dùng thành công');
+    }
+
+    public function permissions(Groups $group)
+    {
+        $moduleList = Modules::all();
+        $roleListArr  = [
+            'view' => 'Xem',
+            'add' => 'Thêm',
+            'edit' => 'Sửa',
+            'delete' => 'Xóa',
+
+        ];
+        return view('admin.groups.permissions', compact('group', 'moduleList', 'roleListArr'));
+    }
+    public function postPermissions(Groups $group, Request $request)
+    {
+        $roleList = [];
+        if (!empty($request->role)) {
+            $roleList = $request->role;
+        }
+        $permissionJson = json_encode($roleList);
+        $group->permissions =  $permissionJson;
+        $group->save();
+        return back()->with('msg', 'Phần quyền người dùng thành công');
     }
 }
