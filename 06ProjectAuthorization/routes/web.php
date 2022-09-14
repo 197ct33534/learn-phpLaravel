@@ -28,7 +28,7 @@ Auth::routes(['register' => false]);
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     Route::get('', [DashboardController::class, 'index'])->name('index');
     // users rotue
-    Route::prefix('users')->name('users.')->group(function () {
+    Route::prefix('users')->middleware('can:users')->name('users.')->group(function () {
         Route::get('', [UsersController::class, 'index'])->name('index');
         Route::get('add', [UsersController::class, 'add'])->name('add');
         Route::post('add', [UsersController::class, 'postAdd'])->name('postAdd');
@@ -38,7 +38,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     });
 
     // group user
-    Route::prefix('groups')->name('groups.')->group(function () {
+    Route::prefix('groups')->middleware('can:groups')->name('groups.')->group(function () {
         Route::get('', [GroupsController::class, 'index'])->name('index');
         Route::get('add', [GroupsController::class, 'add'])->name('add');
         Route::post('add', [GroupsController::class, 'postAdd'])->name('postAdd');
@@ -51,7 +51,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     });
 
     // post route
-    Route::prefix('posts')->name('posts.')->group(function () {
+    Route::prefix('posts')->middleware('can:posts')->name('posts.')->group(function () {
         Route::get('', [PostsController::class, 'index'])->name('index');
         Route::get('add', [PostsController::class, 'add'])->name('add');
         Route::post('add', [PostsController::class, 'postAdd'])->name('postAdd');
