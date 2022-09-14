@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UsersController;
 use  App\Http\Controllers\Admin\GroupsController;
 use  App\Http\Controllers\Admin\PostsController;
 use App\Models\Posts;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,11 +33,11 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     // users rotue
     Route::prefix('users')->middleware('can:users')->name('users.')->group(function () {
         Route::get('', [UsersController::class, 'index'])->name('index');
-        Route::get('add', [UsersController::class, 'add'])->name('add');
-        Route::post('add', [UsersController::class, 'postAdd'])->name('postAdd');
-        Route::get('edit/{user}', [UsersController::class, 'edit'])->name('edit');
-        Route::post('edit/{user}', [UsersController::class, 'postEdit'])->name('postedit');
-        Route::get('delete/{user}', [UsersController::class, 'delete'])->name('delete');
+        Route::get('add', [UsersController::class, 'add'])->name('add')->can('create', User::class);
+        Route::post('add', [UsersController::class, 'postAdd'])->name('postAdd')->can('create', User::class);
+        Route::get('edit/{user}', [UsersController::class, 'edit'])->name('edit')->can('users.edit');
+        Route::post('edit/{user}', [UsersController::class, 'postEdit'])->name('postedit')->can('users.edit');
+        Route::get('delete/{user}', [UsersController::class, 'delete'])->name('delete')->can('users.delete');
     });
 
     // group user
