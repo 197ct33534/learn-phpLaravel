@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UsersController;
 use  App\Http\Controllers\Admin\GroupsController;
 use  App\Http\Controllers\Admin\PostsController;
+use App\Models\Posts;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,10 +55,10 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     // post route
     Route::prefix('posts')->middleware('can:posts')->name('posts.')->group(function () {
         Route::get('', [PostsController::class, 'index'])->name('index');
-        Route::get('add', [PostsController::class, 'add'])->name('add');
-        Route::post('add', [PostsController::class, 'postAdd'])->name('postAdd');
-        Route::get('edit/{post}', [PostsController::class, 'edit'])->name('edit');
-        Route::post('edit/{post}', [PostsController::class, 'postEdit'])->name('postedit');
-        Route::get('delete/{post}', [PostsController::class, 'delete'])->name('delete');
+        Route::get('add', [PostsController::class, 'add'])->name('add')->can('create', Posts::class);
+        Route::post('add', [PostsController::class, 'postAdd'])->name('postAdd')->can('create', Posts::class);
+        Route::get('edit/{post}', [PostsController::class, 'edit'])->name('edit')->can('posts.edit');
+        Route::post('edit/{post}', [PostsController::class, 'postEdit'])->name('postedit')->can('posts.edit');
+        Route::get('delete/{post}', [PostsController::class, 'delete'])->name('delete')->can('posts.delete');
     });
 });
