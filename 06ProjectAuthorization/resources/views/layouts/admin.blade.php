@@ -68,7 +68,9 @@
                         <div class="bg-white py-2 collapse-inner rounded">
 
                             <a class="collapse-item" href="{{ route('admin.users.index') }}">Danh sách</a>
-                            <a class="collapse-item" href="{{ route('admin.users.add') }}">Thêm</a>
+                            @can('create', App\Models\User::class)
+                                <a class="collapse-item" href="{{ route('admin.users.add') }}">Thêm</a>
+                            @endcan
                         </div>
                     </div>
                 </li>

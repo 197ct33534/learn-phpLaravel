@@ -15,7 +15,9 @@
         <h1 class="h3 mb-0 text-gray-800">Danh sách người dùng</h1>
 
     </div>
-    <p><a href="{{ route('admin.users.add') }}"><button class="btn btn-primary">Thêm người dùng</button></a></p>
+    @can('create', App\Models\User::class)
+        <p><a href="{{ route('admin.users.add') }}"><button class="btn btn-primary">Thêm người dùng</button></a></p>
+    @endcan
 
     <table class="table">
         <thead class="thead-light">
@@ -24,8 +26,12 @@
                 <th scope="col">Họ và tên</th>
                 <th scope="col">Email</th>
                 <th scope="col">Tên nhóm</th>
-                <th scope="col">Sửa</th>
-                <th scope="col">Xóa</th>
+                @can('users.edit')
+                    <th scope="col">Sửa</th>
+                @endcan
+                @can('users.delete')
+                    <th scope="col">Xóa</th>
+                @endcan
 
             </tr>
         </thead>
@@ -37,17 +43,21 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->getGroup->name }}</td>
-                    <td>
-                        <a href="{{ route('admin.users.edit', $user) }}"><button class="btn btn-warning">Sửa</button></a>
-                    </td>
-                    <td>
-                        @if (Auth::user()->id != $user->id)
-                            <a href="{{ route('admin.users.delete', $user) }}"
-                                onclick="return confirm('bạn có chắc chắn xóa ?')"><button
-                                    class="btn btn-danger">Xóa</button></a>
-                        @endif
+                    @can('users.edit')
+                        <td>
+                            <a href="{{ route('admin.users.edit', $user) }}"><button class="btn btn-warning">Sửa</button></a>
+                        </td>
+                    @endcan
+                    @can('users.delete')
+                        <td>
+                            @if (Auth::user()->id != $user->id)
+                                <a href="{{ route('admin.users.delete', $user) }}"
+                                    onclick="return confirm('bạn có chắc chắn xóa ?')"><button
+                                        class="btn btn-danger">Xóa</button></a>
+                            @endif
+                        </td>
+                    @endcan
 
-                    </td>
                 </tr>
             @endforeach
         </tbody>
