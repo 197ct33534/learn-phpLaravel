@@ -103,7 +103,9 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="{{ route('admin.posts.index') }}">Danh sách</a>
-                            <a class="collapse-item" href="{{ route('admin.posts.add') }}">Thêm</a>
+                            @can('create', App\Models\Posts::class)
+                                <a class="collapse-item" href="{{ route('admin.posts.add') }}">Thêm</a>
+                            @endcan
                         </div>
                     </div>
                 </li>
