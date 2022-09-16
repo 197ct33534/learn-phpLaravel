@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Modules;
 use App\Models\User;
-
+use App\Models\Posts;
+use App\Models\Groups;
+use App\Policies\PostsPolicy;
+use App\Policies\UsersPolicy;
+use App\Policies\GroupsPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,6 +21,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Posts::class => PostsPolicy::class,
+        User::class => UsersPolicy::class,
+        Groups::class => GroupsPolicy::class,
     ];
 
     /**
@@ -41,6 +48,41 @@ class AuthServiceProvider extends ServiceProvider
                     if (!empty($dataPermissionsJSON)) {
                         $dataPermissionArr = json_decode($dataPermissionsJSON, true);
                         $check = is_Role($dataPermissionArr, $module->name);
+                        return $check;
+                    }
+                    return false;
+                });
+
+                Gate::define($module->name . '.edit', function (User $user) use ($module) {
+                    $dataPermissionsJSON = $user->getGroup->permissions;
+
+                    $dataPermissionArr = [];
+                    if (!empty($dataPermissionsJSON)) {
+                        $dataPermissionArr = json_decode($dataPermissionsJSON, true);
+                        $check = is_Role($dataPermissionArr, $module->name, 'edit');
+                        return $check;
+                    }
+                    return false;
+                });
+                Gate::define($module->name . '.delete', function (User $user) use ($module) {
+                    $dataPermissionsJSON = $user->getGroup->permissions;
+
+                    $dataPermissionArr = [];
+                    if (!empty($dataPermissionsJSON)) {
+                        $dataPermissionArr = json_decode($dataPermissionsJSON, true);
+                        $check = is_Role($dataPermissionArr, $module->name, 'delete');
+                        return $check;
+                    }
+                    return false;
+                });
+
+                Gate::define($module->name . '.permission', function (User $user) use ($module) {
+                    $dataPermissionsJSON = $user->getGroup->permissions;
+
+                    $dataPermissionArr = [];
+                    if (!empty($dataPermissionsJSON)) {
+                        $dataPermissionArr = json_decode($dataPermissionsJSON, true);
+                        $check = is_Role($dataPermissionArr, $module->name, 'permission');
                         return $check;
                     }
                     return false;

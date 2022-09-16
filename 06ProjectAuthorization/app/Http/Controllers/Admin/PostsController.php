@@ -11,7 +11,8 @@ class PostsController extends Controller
 {
     public function index()
     {
-        $postList = Posts::orderBy('created_at', 'desc')->get();
+        $userID = Auth::user()->id;
+        $postList = Posts::orderBy('created_at', 'desc')->where('user_id', $userID)->get();
         return view('admin.posts.lists', compact('postList'));
     }
     public function add()
@@ -38,10 +39,12 @@ class PostsController extends Controller
     }
     public function edit(Posts $post)
     {
+        $this->authorize('update', $post);
         return view('admin.posts.edit', compact('post'));
     }
     public function postEdit(Posts $post, Request $request)
     {
+        $this->authorize('update', $post);
         $rules = [
             'title' => 'required',
             'content' => 'required',
@@ -59,6 +62,7 @@ class PostsController extends Controller
     }
     public function delete(Posts $post)
     {
+        $this->authorize('delete', $post);
         Posts::destroy($post->id);
         return redirect()->route('admin.posts.index')->with('msg', 'Xóa bài viết thành công');
     }

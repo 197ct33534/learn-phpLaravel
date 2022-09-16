@@ -13,8 +13,13 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $usersList = User::all();
+        $userID = Auth::user()->id;
 
+        if (Auth::user()->user_id == 0) {
+            $usersList = User::all();
+        } else {
+            $usersList = User::where('user_id', $userID)->get();
+        }
         return view('admin.users.lists', compact('usersList'));
     }
     public function add()
@@ -55,11 +60,13 @@ class UsersController extends Controller
     }
     public function edit(User $user)
     {
+        $this->authorize('users.edit', $user);
         $groupList = Groups::all();
         return view('admin.users.edit', compact('groupList', 'user'));
     }
     public function postEdit(User $user, Request $request)
     {
+        $this->authorize('users.edit', $user);
 
         $rules = [
             'name' => ['required'],
@@ -93,6 +100,8 @@ class UsersController extends Controller
 
     public function delete(User $user)
     {
+        $this->authorize('users.delete', $user);
+
         if ($user->id != Auth::user()->id) {
             User::destroy($user->id);
             return redirect()->route('admin.users.index')->with('msg', 'Xóa người dùng thành công');

@@ -15,7 +15,9 @@
         <h1 class="h3 mb-0 text-gray-800">Danh sách bài viết</h1>
 
     </div>
-    <p><a href="{{ route('admin.posts.add') }}"><button class="btn btn-primary">Thêm bài viết</button></a></p>
+    @can('create', App\Models\Posts::class)
+        <p><a href="{{ route('admin.posts.add') }}"><button class="btn btn-primary">Thêm bài viết</button></a></p>
+    @endcan
 
     <table class="table">
         <thead class="thead-light">
@@ -23,10 +25,12 @@
                 <th scope="col">#</th>
                 <th scope="col">Tiêu đề</th>
                 <th scope="col">Người đăng</th>
-
-                <th scope="col">Sửa</th>
-                <th scope="col">Xóa</th>
-
+                @can('posts.edit')
+                    <th scope="col">Sửa</th>
+                @endcan
+                @can('posts.delete')
+                    <th scope="col">Xóa</th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -36,16 +40,19 @@
                     <th scope="row">{{ $idx + 1 }}</th>
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->getUser->name }}</td>
+                    @can('posts.edit')
+                        <td>
+                            <a href="{{ route('admin.posts.edit', $post) }}"><button class="btn btn-warning">Sửa</button></a>
+                        </td>
+                    @endcan
+                    @can('posts.delete')
+                        <td>
 
-                    <td>
-                        <a href="{{ route('admin.posts.edit', $post) }}"><button class="btn btn-warning">Sửa</button></a>
-                    </td>
-                    <td>
-
-                        <a href="{{ route('admin.posts.delete', $post) }}"
-                            onclick="return confirm('bạn có chắc chắn xóa ?')"><button
-                                class="btn btn-danger">Xóa</button></a>
-                    </td>
+                            <a href="{{ route('admin.posts.delete', $post) }}"
+                                onclick="return confirm('bạn có chắc chắn xóa ?')"><button
+                                    class="btn btn-danger">Xóa</button></a>
+                        </td>
+                    @endcan
                 </tr>
             @endforeach
         </tbody>

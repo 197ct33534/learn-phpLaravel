@@ -12,7 +12,13 @@ class GroupsController extends Controller
 {
     public function index()
     {
-        $groupList = Groups::all();
+        $userID = Auth::user()->id;
+        if (Auth::user()->user_id == 0) {
+            $groupList = Groups::all();
+        } else {
+            $groupList = Groups::where('user_id', $userID)->get();
+        }
+
         return view('admin.groups.lists', compact('groupList'));
     }
 
@@ -39,11 +45,14 @@ class GroupsController extends Controller
 
     public function edit(Groups $group, Request $request)
     {
+        $this->authorize('groups.edit', $group);
 
         return view('admin.groups.edit', compact('group'));
     }
     public function postEdit(Groups $group, Request $request)
     {
+        $this->authorize('groups.edit', $group);
+
         $rules = ['name' => 'required|unique:groups,name,' . $group->id];
         $messages = [
             'name.required' => 'Tên nhóm không được để trống',
@@ -57,6 +66,8 @@ class GroupsController extends Controller
     }
     public function delete(Groups $group)
     {
+        $this->authorize('groups.delete', $group);
+
         $numberUser = $group->getUser->count();
         if ($numberUser) {
             return redirect()->route('admin.groups.index')->with('msg', 'Trong nhóm vẫn còn ' . $numberUser . ' người dùng');
@@ -67,6 +78,7 @@ class GroupsController extends Controller
 
     public function permissions(Groups $group)
     {
+        $this->authorize('permission', $group);
         $moduleList = Modules::all();
         $roleListArr  = [
             'view' => 'Xem',
@@ -85,6 +97,9 @@ class GroupsController extends Controller
     }
     public function postPermissions(Groups $group, Request $request)
     {
+        $this->authorize('permission', $group);
+
+
         $roleList = [];
         if (!empty($request->role)) {
             $roleList = $request->role;

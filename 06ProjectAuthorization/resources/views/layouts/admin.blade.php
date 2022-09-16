@@ -68,7 +68,9 @@
                         <div class="bg-white py-2 collapse-inner rounded">
 
                             <a class="collapse-item" href="{{ route('admin.users.index') }}">Danh sách</a>
-                            <a class="collapse-item" href="{{ route('admin.users.add') }}">Thêm</a>
+                            @can('create', App\Models\User::class)
+                                <a class="collapse-item" href="{{ route('admin.users.add') }}">Thêm</a>
+                            @endcan
                         </div>
                     </div>
                 </li>
@@ -87,7 +89,9 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="{{ route('admin.groups.index') }}">Danh sách</a>
-                            <a class="collapse-item" href="{{ route('admin.groups.add') }}">Thêm</a>
+                            @can('create', App\Models\Groups::class)
+                                <a class="collapse-item" href="{{ route('admin.groups.add') }}">Thêm</a>
+                            @endcan
                         </div>
                     </div>
                 </li>
@@ -103,7 +107,9 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="{{ route('admin.posts.index') }}">Danh sách</a>
-                            <a class="collapse-item" href="{{ route('admin.posts.add') }}">Thêm</a>
+                            @can('create', App\Models\Posts::class)
+                                <a class="collapse-item" href="{{ route('admin.posts.add') }}">Thêm</a>
+                            @endcan
                         </div>
                     </div>
                 </li>
