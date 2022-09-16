@@ -13,10 +13,12 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $userID = Auth::user()->user_id;
-        $usersList = User::where('user_id', $userID)->get();
-        if ($userID == 0) {
-            $usersList = User::where('user_id', '!=', '0')->get();;
+        $userID = Auth::user()->id;
+
+        if (Auth::user()->user_id == 0) {
+            $usersList = User::all();
+        } else {
+            $usersList = User::where('user_id', $userID)->get();
         }
         return view('admin.users.lists', compact('usersList'));
     }

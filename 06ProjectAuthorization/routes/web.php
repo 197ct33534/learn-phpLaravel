@@ -7,6 +7,7 @@ use  App\Http\Controllers\Admin\GroupsController;
 use  App\Http\Controllers\Admin\PostsController;
 use App\Models\Posts;
 use App\Models\User;
+use App\Models\Groups;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,14 +44,14 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     // group user
     Route::prefix('groups')->middleware('can:groups')->name('groups.')->group(function () {
         Route::get('', [GroupsController::class, 'index'])->name('index');
-        Route::get('add', [GroupsController::class, 'add'])->name('add');
-        Route::post('add', [GroupsController::class, 'postAdd'])->name('postAdd');
-        Route::get('edit/{group}', [GroupsController::class, 'edit'])->name('edit');
-        Route::post('edit/{group}', [GroupsController::class, 'postEdit'])->name('postedit');
-        Route::get('delete/{group}', [GroupsController::class, 'delete'])->name('delete');
+        Route::get('add', [GroupsController::class, 'add'])->name('add')->can('create', Groups::class);
+        Route::post('add', [GroupsController::class, 'postAdd'])->name('postAdd')->can('create', Groups::class);
+        Route::get('edit/{group}', [GroupsController::class, 'edit'])->name('edit')->can('groups.edit');
+        Route::post('edit/{group}', [GroupsController::class, 'postEdit'])->name('postedit')->can('groups.edit');
+        Route::get('delete/{group}', [GroupsController::class, 'delete'])->name('delete')->can('groups.delete');
 
-        Route::get('permissions/{group}', [GroupsController::class, 'permissions'])->name('permissions');
-        Route::post('permissions/{group}', [GroupsController::class, 'postPermissions']);
+        Route::get('permissions/{group}', [GroupsController::class, 'permissions'])->name('permissions')->can('groups.permission');
+        Route::post('permissions/{group}', [GroupsController::class, 'postPermissions'])->can('groups.permission');
     });
 
     // post route
