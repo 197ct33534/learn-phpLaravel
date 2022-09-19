@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FaceBookController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 /*
@@ -20,10 +21,7 @@ Route::get('chinh-sach-rieng-tu', function () {
     return '<h1>Chính sách riêng tư</h1>';
 });
 
-Route::get('auth/facebook/callback', function () {
-    return 'callback facebook';
-});
-
-Route::get('/auth/facebook', function () {
-    return Socialite::driver('facebook')->redirect();
+Route::prefix('facebook')->name('facebook.')->group(function () {
+    Route::get('auth', [FaceBookController::class, 'loginUsingFacebook'])->name('login');
+    Route::get('callback', [FaceBookController::class, 'callbackFromFacebook'])->name('callback');
 });
