@@ -33,6 +33,6 @@ return [
     'facebook' => [
         'client_id' => '1157025951547528', //USE FROM FACEBOOK DEVELOPER ACCOUNT
         'client_secret' => 'c4c6802615bd7c732d3b72d3a2af4a0e', //USE FROM FACEBOOK DEVELOPER ACCOUNT
-        'redirect' => 'https://unicode-login.herokuapp.com/facebook/callback'
+        'redirect' => '/facebook/callback'
     ],
 ];
