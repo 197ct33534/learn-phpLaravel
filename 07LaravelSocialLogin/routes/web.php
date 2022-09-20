@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FaceBookController;
+use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 /*
@@ -24,4 +25,9 @@ Route::get('chinh-sach-rieng-tu', function () {
 Route::prefix('facebook')->name('facebook.')->group(function () {
     Route::get('auth', [FaceBookController::class, 'loginUsingFacebook'])->name('login');
     Route::get('callback', [FaceBookController::class, 'callbackFromFacebook'])->name('callback');
+});
+
+Route::prefix('google')->name('google.')->group(function () {
+    Route::get('auth', [GoogleController::class, 'loginUsingGoogle'])->name('login');
+    Route::get('callback', [GoogleController::class, 'callbackFromGoogle'])->name('callback');
 });

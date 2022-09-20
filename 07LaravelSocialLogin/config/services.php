@@ -35,4 +35,9 @@ return [
         'client_secret' => 'c4c6802615bd7c732d3b72d3a2af4a0e', //USE FROM FACEBOOK DEVELOPER ACCOUNT
         'redirect' => '/facebook/callback'
     ],
+    'google' => [
+        'client_id' => '128114575538-ctdcltaamrtog4qhqmlcq0va0tkj3vo3.apps.googleusercontent.com', //USE FROM FACEBOOK DEVELOPER ACCOUNT
+        'client_secret' => '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', //USE FROM FACEBOOK DEVELOPER ACCOUNT
+        'redirect' => '/google/callback'
+    ],
 ];
