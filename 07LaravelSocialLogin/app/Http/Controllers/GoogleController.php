@@ -9,17 +9,13 @@ class GoogleController extends Controller
 {
     public function loginUsingGoogle()
     {
-        return Socialite::driver('facebook')->redirect();
+        return Socialite::driver('google')->redirect();
     }
     public function callbackFromGoogle()
     {
         try {
-            $user = Socialite::driver('facebook')->user();
-            echo $user->getId() . '<br/>';
-            echo $user->getNickname() . '<br/>';
-            echo $user->getName() . '<br/>>';
-            echo $user->getEmail() . '<br/>';
-            echo $user->getAvatar() . '<br/>';
+            $user = Socialite::driver('google')->user();
+            dd($user);
 
 
             return redirect()->route('home');
