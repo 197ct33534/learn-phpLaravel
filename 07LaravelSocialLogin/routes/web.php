@@ -4,6 +4,8 @@ use App\Http\Controllers\FaceBookController;
 use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+use DB;
+use Hash;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +18,13 @@ use Laravel\Socialite\Facades\Socialite;
 */
 
 Route::get('/', function () {
+    $user = DB::table('users')->insert([
+        'name' => 'trần trung nghĩa',
+        'email' => 'trantrungnghia07122001@gmail.com',
+        'password' => Hash::make('123456'),
+
+    ]);
+    dd($user);
     return view('welcome');
 });
 Route::get('chinh-sach-rieng-tu', function () {
