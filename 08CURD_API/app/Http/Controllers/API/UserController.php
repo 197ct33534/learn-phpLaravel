@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\User as UsersResource;
 
 class UserController extends Controller
 {
@@ -19,26 +20,20 @@ class UserController extends Controller
         if ($request->email) {
             $where[] = ['email', 'like', '%' . $request->email . '%'];
         }
-        $userList = User::orderBy('id', 'desc')->get();
+        $userList = User::orderBy('id', 'desc')->paginate();
         if (!empty($where)) {
-            $userList = User::where($where)->orderBy('id', 'desc')->get();
+            $userList = User::where($where)->orderBy('id', 'desc')->paginate();
         }
         // $userList đang là 1 collection
-        $users = UserResource::collection($userList);
+        // $users = UserResource::collection($userList);
 
-        $response = [
-            'status' => 'no_data',
-            'data' =>  $users,
-        ];
+
+        $statusText = 'no_data';
         if ($userList->count()) {
-            $response = [
-                'status' => 'data',
-                'data' =>  $users,
-
-            ];
-            return $response;
+            $statusText = 'success';
         }
-        return $response;
+        $users = new UsersResource($userList, $statusText);
+        return  $users;
     }
 
     public function detail($id)
