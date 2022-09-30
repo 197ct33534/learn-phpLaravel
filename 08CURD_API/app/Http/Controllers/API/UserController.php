@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\User as UsersResource;
+use App\Http\Resources\PostCollection;
 
 class UserController extends Controller
 {
@@ -20,38 +21,56 @@ class UserController extends Controller
         if ($request->email) {
             $where[] = ['email', 'like', '%' . $request->email . '%'];
         }
-        $userList = User::orderBy('id', 'desc')->paginate();
+        $userList = User::orderBy('id', 'desc')->with('posts')->withCount('posts')->paginate();
         if (!empty($where)) {
-            $userList = User::where($where)->orderBy('id', 'desc')->paginate();
+            $userList = User::where($where)->orderBy('id', 'desc')->with('posts')->paginate();
         }
         // $userList đang là 1 collection
         // $users = UserResource::collection($userList);
 
 
         $statusText = 'no_data';
+        $statusCode = 204;
+
         if ($userList->count()) {
             $statusText = 'success';
+            $statusCode = 200;
         }
-        $users = new UsersResource($userList, $statusText);
+        $users = new UsersResource($userList, $statusCode, $statusText);
+
+
         return  $users;
     }
 
     public function detail($id)
     {
-        $user = User::find($id);
+        $user = User::with('posts')->find($id);
         //$user là 1 user thông thường
-        $user = new UserResource($user);
 
-        $response = [
-            'status' => 'success',
-            'user' => $user,
-        ];
+
+        // $response = [
+        //     'status' => 'success',
+        //     'user' => $user,
+        // ];
         if (!$user) {
             $response = [
-                'status' => 'error',
+                'statusText' => 'error',
+                'statusCode' => 404,
+
                 'msg' => 'người dùng không tồn tại',
             ];
+        } else {
+            $userOne = new UserResource($user);
+
+            $response = [
+                'statusText' => 'success',
+                'statusCode' => 200,
+                'data' => $userOne
+
+            ];
         }
+        // $userOne = new UserResource($user);
+        // dd($userOne);/
         return  $response;
     }
     public function create(Request $request)
@@ -67,15 +86,17 @@ class UserController extends Controller
 
         if ($user->id) {
             $response = [
-                'status' => 'success',
+                'statusText' => 'success',
+                'statusCode' => 201,
                 'data' => $user
             ];
             return $response;
         }
 
         return  [
-            'status' => 'error',
-            'msg' => 'thêm user không thành công'
+            'statusText' => 'error',
+            'statusCode' => 500,
+            'msg' => 'serve error'
         ];
     }
 
@@ -84,7 +105,8 @@ class UserController extends Controller
         $user = User::find($id);
 
         $response = [
-            'status' => 'error',
+            'statusText' => 'error',
+            'statusCode' => 404,
             'msg' => 'người dùng không tồn tại',
         ];
         if (!$user) {
@@ -115,7 +137,8 @@ class UserController extends Controller
                 $user->save();
             }
             $response = [
-                'status' => 'success',
+                'statusText' => 'success',
+                'statusCode' => 200,
                 'data' =>   $user,
             ];
         }
@@ -127,7 +150,8 @@ class UserController extends Controller
         $user = User::find($id);
 
         $response = [
-            'status' => 'error',
+            'statusText' => 'error',
+            'statusCode' => 404,
             'msg' => 'người dùng không tồn tại',
         ];
         if (!$user) {
@@ -136,8 +160,9 @@ class UserController extends Controller
             $user = User::destroy($id);
             if ($user) {
                 $response = [
-                    'status' => 'success',
-                    'data' => $user,
+                    'statusText' => 'success',
+                    'statusCode' => 204,
+
                 ];
             }
         }

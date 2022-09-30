@@ -13,9 +13,11 @@ class User extends ResourceCollection
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     private $statusText;
-    public function __construct($resource, $statusText = 'success')
+    public function __construct($resource, $statusCode, $statusText = 'success')
     {
         parent::__construct($resource);
+        $this->statusCode = $statusCode;
+
         $this->statusText = $statusText;
     }
     public function toArray($request)
@@ -26,6 +28,7 @@ class User extends ResourceCollection
         return [
             'data' => $this->collection,
             'statusText' => $this->statusText,
+            'statusCode' => $this->statusCode,
             'count' => $this->collection->count(),
 
         ];
