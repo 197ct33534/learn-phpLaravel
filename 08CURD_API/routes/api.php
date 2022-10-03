@@ -32,3 +32,4 @@ Route::prefix('users')->name('users.')->middleware('auth:sanctum')->group(functi
 
 Route::apiResource('products', ProductController::class);
 Route::get('/token', [AuthenticateController::class, 'getToken'])->middleware('auth:sanctum');
+Route::post('/refresh-token', [AuthenticateController::class, 'refreshToken']);
