@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\AuthenticateController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,8 +19,8 @@ use App\Http\Controllers\API\ProductController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::prefix('users')->name('users.')->group(function () {
+Route::post('/login', [AuthenticateController::class, 'login']);
+Route::prefix('users')->name('users.')->middleware('auth:sanctum')->group(function () {
 
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{id}', [UserController::class, 'detail']);
@@ -30,3 +31,4 @@ Route::prefix('users')->name('users.')->group(function () {
 });
 
 Route::apiResource('products', ProductController::class);
+Route::get('/token', [AuthenticateController::class, 'getToken'])->middleware('auth:sanctum');

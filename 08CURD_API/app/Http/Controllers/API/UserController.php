@@ -21,9 +21,12 @@ class UserController extends Controller
         if ($request->email) {
             $where[] = ['email', 'like', '%' . $request->email . '%'];
         }
-        $userList = User::orderBy('id', 'desc')->with('posts')->withCount('posts')->paginate();
+        // $userList = User::orderBy('id', 'desc')->with('posts')->withCount('posts')->paginate();
+        $userList = User::orderBy('id', 'desc')->paginate();
+
         if (!empty($where)) {
-            $userList = User::where($where)->orderBy('id', 'desc')->with('posts')->paginate();
+            // $userList = User::where($where)->orderBy('id', 'desc')->with('posts')->paginate();
+            $userList = User::where($where)->orderBy('id', 'desc')->paginate();
         }
         // $userList đang là 1 collection
         // $users = UserResource::collection($userList);
