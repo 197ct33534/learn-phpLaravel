@@ -22,7 +22,7 @@ class UserController extends Controller
             $where[] = ['email', 'like', '%' . $request->email . '%'];
         }
         // $userList = User::orderBy('id', 'desc')->with('posts')->withCount('posts')->paginate();
-        $userList = User::orderBy('id', 'desc')->paginate();
+        $userList = User::orderBy('id', 'desc')->with('posts')->paginate();
 
         if (!empty($where)) {
             // $userList = User::where($where)->orderBy('id', 'desc')->with('posts')->paginate();

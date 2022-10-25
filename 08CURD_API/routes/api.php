@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\AuthenticateController;
+use App\Models\User;
+use Carbon\Carbon;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,8 +22,9 @@ use App\Http\Controllers\API\AuthenticateController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/logout', [AuthenticateController::class, 'logout'])->middleware('auth:api');
 Route::post('/login', [AuthenticateController::class, 'login']);
-Route::prefix('users')->name('users.')->middleware('auth:sanctum')->group(function () {
+Route::prefix('users')->name('users.')->middleware('auth:api')->group(function () {
 
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{id}', [UserController::class, 'detail']);
@@ -33,3 +37,22 @@ Route::prefix('users')->name('users.')->middleware('auth:sanctum')->group(functi
 Route::apiResource('products', ProductController::class);
 Route::get('/token', [AuthenticateController::class, 'getToken'])->middleware('auth:sanctum');
 Route::post('/refresh-token', [AuthenticateController::class, 'refreshToken']);
+Route::get('/passport', function () {
+    $user  = User::find(1);
+    $tokenResult = $user->createToken('auth_api');
+    // dd($tokenResult);
+    // thiet lap expired
+    $token = $tokenResult->token;
+    $token->expires_at = Carbon::now()->addMinutes(60);
+    // dd($tokenResult);
+    // access token
+    $accessToken = $tokenResult->accessToken;
+
+    //lấy token expired
+    $expires = Carbon::parse($token->expires_at)->toDateTimeString();
+    $respone = [
+        'access_token' => $accessToken,
+        'expires' => $expires
+    ];
+    return   $respone;
+});
